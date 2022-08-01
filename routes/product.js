@@ -6,15 +6,15 @@ const multer = require('../middleware/multer-config');
 
 const productCtrl = require('../controllers/product');
 
-router.get('/', auth, productCtrl.getAllProducts);
+router.get('/', productCtrl.getAllProducts);
 
 router.post('/', multer, productCtrl.createProduct);
 
-router.get('/:id', auth, productCtrl.getOneProduct);
+router.get('/:id', productCtrl.getOneProduct);
 
-router.put('/:id', auth, multer, productCtrl.modifyProduct);
+router.put('/:id', multer, productCtrl.modifyProduct);
 
-router.delete('/:id', auth, productCtrl.deleteProduct);
+router.delete('/:id', productCtrl.deleteProduct);
 
 
 module.exports = router;
