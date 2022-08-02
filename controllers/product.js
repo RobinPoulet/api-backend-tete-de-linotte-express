@@ -2,9 +2,12 @@ const Product = require('../models/product');
 const fs = require('fs');
 
 exports.createProduct = (req, res, next) => {
-    delete req.body._id;
+    console.log(
+        req.body.product,
+        )
     const product = new Product({
-      ...req.body
+      ...JSON.parse(req.body.product),
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     product.save()
       .then((product) => res.status(201).json({ product }))
@@ -24,7 +27,12 @@ exports.getOneProduct = (req, res, next) => {
 }
 
 exports.modifyProduct = (req, res, next) => {
-    Product.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    const productObject = req.file ? {
+        ...JSON.parse(req.body.product),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : { ...req.body };
+
+    Product.updateOne({ _id: req.params.id }, { ...productObject, _id: req.params.id })
     .then(() => res.status(200).json({ message: 'Modified!'}))
     .catch(error => res.status(400).json({ error }));
 }
