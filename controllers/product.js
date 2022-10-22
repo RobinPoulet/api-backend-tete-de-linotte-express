@@ -2,9 +2,6 @@ const Product = require('../models/product');
 const fs = require('fs');
 
 exports.createProduct = (req, res, next) => {
-    console.log(
-        req.body.product,
-        )
     const product = new Product({
       ...JSON.parse(req.body.product),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -32,13 +29,15 @@ exports.modifyProduct = (req, res, next) => {
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
 
-    Product.updateOne({ _id: req.params.id }, { ...productObject, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Modified!'}))
-    .catch(error => res.status(400).json({ error }));
+    Product
+        .updateOne({ _id: req.params.id }, { ...productObject, _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Modified!'}))
+        .catch(error => res.status(400).json({ error }));
 }
 
 exports.deleteProduct = (req, res, next) => {
-    Product.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Deleted!'}))
-    .catch(error => res.status(400).json({ error }));
+    Product
+        .deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Deleted!'}))
+        .catch(error => res.status(400).json({ error }));
 }

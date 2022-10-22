@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
+const categoryRoutes = require('./routes/category');
 
 const app = express();
 
@@ -32,6 +33,8 @@ app.use('/api/stuff', stuffRoutes);
 app.use('/api/auth', userRoutes);
 
 app.use('/api/product', productRoutes);
+
+app.use('/api/category', categoryRoutes);
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
   
