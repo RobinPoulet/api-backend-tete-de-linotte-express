@@ -6,7 +6,7 @@ module.exports = {
 
   deploy : {
     production : {
-      key  : "/home/tete-de-linotte/.ssh/id_ed25519",
+      key  : "/home/tete-de-linotte/.ssh/",
       user : 'tete-de-linotte',
       host : 'ssh-tete-de-linotte.alwaysdata.net',
       ref  : 'origin/main',
