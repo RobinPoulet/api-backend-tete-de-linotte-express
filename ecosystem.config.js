@@ -6,12 +6,12 @@ module.exports = {
 
   deploy : {
     production : {
-      key  : "/home/tete-de-linotte/.ssh/authorized_keys",
+      key  : "~/.ssh/authorized_keys",
       user : 'tete-de-linotte',
       host : 'ssh-tete-de-linotte.alwaysdata.net',
       ref  : 'origin/main',
       repo : 'git@github.com:RobinPoulet/express-mongoDb-oc.git',
-      path : '/home/tete-de-linotte/tdl_backend',
+      path : '~/tete-de-linotte/tdl_backend',
       'pre-deploy-local': '',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''
