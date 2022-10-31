@@ -29,7 +29,10 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use('/', () => console.log('toto'));  
+app.get('/', (req, res, next) => {
+  res.json({name: "toto"});
+  next();
+})  
   
 app.use('/api/stuff', stuffRoutes);
 
