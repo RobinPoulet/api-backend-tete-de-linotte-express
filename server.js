@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./app');
-console.log('toto')
+console.log(process.env.DB_USER, process.env.DB_PASSWORD)
 console.log(process.env.PORT)
 const normalizePort = val => {
   const port = parseInt(val, 10);
