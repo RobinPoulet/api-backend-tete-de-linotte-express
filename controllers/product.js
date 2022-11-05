@@ -44,12 +44,9 @@ exports.modifyProduct = (req, res, next) => {
 exports.deleteProduct = (req, res, next) => {
     Product.findOne({ _id: req.params.id })
         .then(product => {
-            const filename = product.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
                 Product.deleteOne({ _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Deleted!'}))
                     .catch(error => res.status(400).json({ error }));
-            });
         })
         .catch(error => res.status(500).json({ error }));
 }
