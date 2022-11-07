@@ -14,18 +14,19 @@ exports.createProduct = (req, res, next) => {
                 .then((result) => {
                     console.log("success", JSON.stringify(result, null, 2));
                     product.imageUrl = result.secure_url;
+                    product
+                        .save()
+                        .then(
+                            (product) => res.status(201).json({ product }),
+                        )
+                        .catch(
+                            error => res.status(400).json({ error })
+                        );
                 })
                 .catch((error) => {
                     console.log("error", JSON.stringify(error, null, 2));
                 })
-    product
-        .save()
-        .then(
-            (product) => res.status(201).json({ product }),
-        )
-        .catch(
-            error => res.status(400).json({ error })
-        );
+   
 }
 
 exports.getAllProducts = (req, res, next) => {
