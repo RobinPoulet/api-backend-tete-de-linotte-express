@@ -1,6 +1,6 @@
 const Image = require('../models/image');
 require('dotenv').config();
-import { v2 as cloudinary } from 'cloudinary'
+const cloudinary = require('cloudinary').v2;
 
 exports.uploadImage = (req, res, next) => {
     console.log(req);
