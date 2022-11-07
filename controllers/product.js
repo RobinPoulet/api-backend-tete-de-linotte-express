@@ -1,21 +1,18 @@
 const Product = require('../models/product');
-const fs = require('fs');
-require('dotenv').config();
-import { v2 as cloudinary } from 'cloudinary'
 
 exports.createProduct = (req, res, next) => {
     const product = new Product({
-        ...JSON.parse(req.body.product), 
+        ...JSON.parse(req.body.product),
     });
-   
-                product
-                .save()
-                .then(
-                    (product) => res.status(201).json({ product }),
-                )
-                .catch(
-                    error => res.status(400).json({ error })
-                );
+
+    product
+    .save()
+    .then(
+        (product) => res.status(201).json({ product }),
+    )
+    .catch(
+        error => res.status(400).json({ error })
+    );
 }
 
 exports.getAllProducts = (req, res, next) => {
