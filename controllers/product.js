@@ -1,5 +1,8 @@
 const Product = require('../models/product');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+
+console.log(cloudinary.config().cloud_name);
 
 exports.createProduct = (req, res, next) => {
     const product = new Product({
@@ -9,7 +12,18 @@ exports.createProduct = (req, res, next) => {
     product
         .save()
         .then(
-            (product) => res.status(201).json({ product })
+            (product) => res.status(201).json({ product }),
+            cloudinary.uploader
+                .upload(req.file.path, {
+                    ressource_type: 'image',
+                })
+                .then((result) => {
+                    console.log("success", JSON.stringify(result, null, 2));
+                    fs.unlinkSync(req.file.path);
+                })
+                .catch((error) => {
+                    console.log("error", JSON.stringify(error, null, 2));
+                })
         )
         .catch(
             error => res.status(400).json({ error })
