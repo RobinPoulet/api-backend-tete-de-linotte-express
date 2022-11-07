@@ -3,8 +3,6 @@ const fs = require('fs');
 require('dotenv').config();
 import { v2 as cloudinary } from 'cloudinary'
 
-console.log(cloudinary.config().cloud_name);
-
 exports.createProduct = (req, res, next) => {
     const product = new Product({
         ...JSON.parse(req.body.product), 
