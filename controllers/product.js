@@ -1,29 +1,29 @@
 const Product = require('../models/product');
 const fs = require('fs');
-const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
+import { v2 as cloudinary } from 'cloudinary'
 
 console.log(cloudinary.config().cloud_name);
 
 exports.createProduct = (req, res, next) => {
     const product = new Product({
-        ...JSON.parse(req.body.product),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`   
+        ...JSON.parse(req.body.product), 
     });
-    product
-        .save()
-        .then(
-            (product) => res.status(201).json({ product }),
-            cloudinary.uploader
+    cloudinary.uploader
                 .upload(req.file.path, {
                     ressource_type: 'image',
                 })
                 .then((result) => {
                     console.log("success", JSON.stringify(result, null, 2));
-                    fs.unlinkSync(req.file.path);
+                    product.imageUrl = result.secure_url;
                 })
                 .catch((error) => {
                     console.log("error", JSON.stringify(error, null, 2));
                 })
+    product
+        .save()
+        .then(
+            (product) => res.status(201).json({ product }),
         )
         .catch(
             error => res.status(400).json({ error })
