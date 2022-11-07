@@ -3,24 +3,25 @@ const mongoose = require('mongoose');
 const imageSchema = mongoose.Schema({
     name: { 
         type: String, 
-        required: true 
+        required: false 
     },
     type: { 
         type: String, 
-        required: true 
+        required: false 
     },
     url: { 
         type: String, 
-        required: true 
+        required: true,
+        unique: true  
     },
     model: {
         type: String,
-        required: true
+        required: false
     },
     modelId: { 
         type: String,
-        required: true,
-        unique: true 
+        required: false,
+        
     }
 })
 

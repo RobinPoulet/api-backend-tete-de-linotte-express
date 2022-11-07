@@ -5,10 +5,11 @@ const cloudinary = require('cloudinary').v2;
 exports.uploadImage = (req, res, next) => {
     console.log(req);
     const image = new Image({
-        name: req.file.originalname,
-        type: req.file.mimetype,
-        model: req.body.model,
-        modelId: req.body.modelId,
+        // name: req.file.originalname,
+        // type: req.file.mimetype,
+        // model: req.body.model,
+        // modelId: req.body.modelId,
+        url: '',
     });
     cloudinary.uploader
         .upload(req.file.path, {
