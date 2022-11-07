@@ -11,7 +11,7 @@ router.post('/',productCtrl.createProduct);
 
 router.get('/:id', productCtrl.getOneProduct);
 
-router.put('/:id', multer, productCtrl.modifyProduct);
+router.put('/:id', productCtrl.modifyProduct);
 
 router.delete('/:id', productCtrl.deleteProduct);
 
