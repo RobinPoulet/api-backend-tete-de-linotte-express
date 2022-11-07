@@ -18,13 +18,14 @@ exports.uploadImage = (req, res, next) => {
         .then((result) => {
             console.log("success", JSON.stringify(result, null, 2));
             image.url = result.secure_url;
+            image
+                .save()
+                .then(() => res.status(201).json({ message: 'Image uploaded!'}))
+                .catch(error => res.status(400).json({ error }));
             
         })
         .catch((error) => {
             console.log("error", JSON.stringify(error, null, 2));
         })
-    image
-        .save()
-        .then(() => res.status(201).json({ message: 'Image uploaded!'}))
-        .catch(error => res.status(400).json({ error }));
+   
 };
