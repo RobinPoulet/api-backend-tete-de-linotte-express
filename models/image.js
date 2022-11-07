@@ -16,6 +16,11 @@ const imageSchema = mongoose.Schema({
     model: {
         type: String,
         required: true
+    },
+    modelId: { 
+        type: String,
+        required: true,
+        unique: true 
     }
 })
 

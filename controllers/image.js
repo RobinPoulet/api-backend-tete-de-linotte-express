@@ -1,12 +1,27 @@
 const Image = require('../models/image');
+require('dotenv').config();
+import { v2 as cloudinary } from 'cloudinary'
 
 exports.uploadImage = (req, res, next) => {
+    console.log(req);
     const image = new Image({
-        url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        name: req.file.filename,
+        name: req.file.originalname,
         type: req.file.mimetype,
-        model: req.body.model
-    })
+        model: req.body.model,
+        modelId: req.body.modelId,
+    });
+    cloudinary.uploader
+        .upload(req.file.path, {
+            ressource_type: 'image',
+        })
+        .then((result) => {
+            console.log("success", JSON.stringify(result, null, 2));
+            image.url = result.secure_url;
+            
+        })
+        .catch((error) => {
+            console.log("error", JSON.stringify(error, null, 2));
+        })
     image
         .save()
         .then(() => res.status(201).json({ message: 'Image uploaded!'}))
