@@ -1,9 +1,9 @@
 const Product = require('../models/product');
 
 exports.createProduct = (req, res, next) => {
-    const product = new Product({
-        ...JSON.parse(req.body.product),
-    });
+    const product = new Product(
+        {...req.body}
+    );
 
     product
     .save()
