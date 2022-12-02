@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   });
 
 app.get('/', (req, res, next) => {
-  res.json({name: "toto"});
+  res.json({name: "test de connexion à l'api"});
   next();
 })  
   
