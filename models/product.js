@@ -17,6 +17,10 @@ const productSchema = mongoose.Schema({
     type: Boolean, 
     required: true 
   },
+  avatarName: {
+    type: String,
+    required: false
+  },
   avatarUrl: {
     type: String, 
     required: false 
