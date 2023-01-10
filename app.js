@@ -13,12 +13,17 @@ const path = require('path');
 
 const mongoUser = process.env.DB_USER;
 const mongoPassword = process.env.DB_PASSWORD;
+const myDataBase = 'tete_de_linotte';
+const url = `mongodb+srv://${mongoUser}:${mongoPassword}@cluster0.zmhsivz.mongodb.net/${myDataBase}?retryWrites=true&w=majority`;
+const options =  { useNewUrlParser: true, useUnifiedTopology: true };
 
-mongoose.connect('mongodb+srv://'+mongoUser+':'+mongoPassword+'@cluster0.zmhsivz.mongodb.net/?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+mongoose.createConnection(url, options, (error) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(`Connecté à ${myDataBase}!`);
+  }
+}
 
 app.use(express.json());
 
@@ -32,7 +37,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res, next) => {
   res.json({name: "toto"});
   next();
-})  
+});  
   
 app.use('/api/stuff', stuffRoutes);
 
