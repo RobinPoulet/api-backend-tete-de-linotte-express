@@ -23,7 +23,7 @@ mongoose.createConnection(url, options, (error) => {
   } else {
     console.log(`Connecté à ${myDataBase}!`);
   }
-}
+});
 
 app.use(express.json());
 
