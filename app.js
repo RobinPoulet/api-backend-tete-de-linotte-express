@@ -13,7 +13,7 @@ const path = require('path');
 
 const mongoUser = process.env.DB_USER;
 const mongoPassword = process.env.DB_PASSWORD;
-const myDataBase = 'tete_de_linotte';
+const myDataBase = 'test';
 const url = `mongodb+srv://${mongoUser}:${mongoPassword}@cluster0.zmhsivz.mongodb.net/${myDataBase}?retryWrites=true&w=majority`;
 const options =  { useNewUrlParser: true, useUnifiedTopology: true };
 
