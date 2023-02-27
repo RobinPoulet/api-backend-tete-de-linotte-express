@@ -47,8 +47,7 @@ exports.deleteProduct = (req, res, next) => {
 }
 
 exports.getProductsByCategory = (req, res, next) => {
-    console.log(req.params)
-    Product.find({ category: req.params.categoryId })
+    Product.find({ categoryId: req.params.categoryId })
       .then(products => res.status(200).json({ products }))
       .catch(error => res.status(400).json({ error }));
   }
