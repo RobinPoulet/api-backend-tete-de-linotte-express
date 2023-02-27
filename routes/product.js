@@ -15,6 +15,8 @@ router.put('/:id', productCtrl.modifyProduct);
 
 router.delete('/:id', productCtrl.deleteProduct);
 
+router.get('/category/:categoryId', productCtrl.getProductsByCategory);
+
 
 module.exports = router;
 

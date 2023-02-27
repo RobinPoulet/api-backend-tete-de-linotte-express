@@ -45,3 +45,10 @@ exports.deleteProduct = (req, res, next) => {
         .then(() => res.status(200).json({ message: 'Deleted!'}))
         .catch(error => res.status(400).json({ error }));
 }
+
+exports.getProductsByCategory = (req, res, next) => {
+    Product.find({ category: req.params.categoryId })
+      .then(products => res.status(200).json({ products }))
+      .catch(error => res.status(400).json({ error }));
+  }
+  
