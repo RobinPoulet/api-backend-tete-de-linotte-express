@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "seed:categories": "node ./seeders/category.js"
+    "seed:categories": "node ./seeders/category.js",
+    "seed:products": "node ./seeders/product.js",
+    "delete:categories": "node ./deleteTable/category.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
