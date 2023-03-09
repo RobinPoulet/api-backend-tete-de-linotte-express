@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "seed:categories": "node ./seeders/category.js",
-    "seed:products": "node ./seeders/product.js",
-    "delete:categories": "node ./deleteTable/category.js"
+    "seed:category": "node ./seeders/category.js",
+    "seed:product": "node ./seeders/product.js",
+    "delete_all:category": "node ./delete_all/category.js",
+    "delete_all:product": "node ./delete_all/product.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
