@@ -10,33 +10,36 @@ mongoose.connect('mongodb+srv://'+mongoUser+':'+mongoPassword+'@cluster0.zmhsivz
 { useNewUrlParser: true,
   useUnifiedTopology: true });
 
+async function* generateCategories() {
+  for (let i = 0; i < 12; i++) {
+    const category = new Category({
+      name: faker.commerce.department(),
+      description: faker.lorem.sentence(),
+    });
+
+    // Vérifie si la catégorie existe déjà dans la base de données
+    const existingCategory = await Category.findOne({ name: category.name });
+    const categoryExistsInArray = categories.some(cat => cat.name === category.name);
+    if (!existingCategory && !categoryExistsInArray) {
+      yield category;
+    }
+  }
+}
+
 const categories = [];
 
-for (let i = 0; i < 12; i++) {
-  const category = new Category({
-    name: faker.commerce.department(),
-    description: faker.lorem.sentence(),
-  });
+mongoose.connection.once('open', async () => {
+  for await (const category of generateCategories()) {
+    categories.push(category);
+  }
 
-  // Vérifie si la catégorie existe déjà dans la base de données
-  Category.findOne({ name: category.name })
-    .then(existingCategory => {
-      if (!existingCategory) {
-        categories.push(category);
-      }
+  Category.insertMany(categories)
+    .then(() => {
+      console.log('Categories added successfully');
+      mongoose.connection.close();
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       mongoose.connection.close();
     });
-}
-
-Category.insertMany(categories)
-  .then(() => {
-    console.log('Categories added successfully');
-    mongoose.connection.close();
-  })
-  .catch((error) => {
-    console.log(error);
-    mongoose.connection.close();
-  });
+});

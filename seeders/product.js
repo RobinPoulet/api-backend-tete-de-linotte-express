@@ -32,8 +32,8 @@ async function seed() {
         // Generate a random number to determine if the product is in stock
         const inStock = Math.random() >= 0.5;
   
-        // Generate a random image URL for the product
-        const avatarUrl = faker.image.imageUrl();
+        // Generate a unique avatar URL for the product
+        const avatarUrl = faker.image.avatar({seed: product._id});
   
         // Create the product object and add it to the array
         let subcategoryId;
@@ -53,7 +53,11 @@ async function seed() {
           avatarUrl,
           categoryId,
           subcategoryId, // Set the subcategory id
-          images: [faker.image.imageUrl(), faker.image.imageUrl(), faker.image.imageUrl()]
+          images: [
+            faker.image.imageUrl(),
+            faker.image.imageUrl(),
+            faker.image.imageUrl()
+          ].map((imageUrl) => `${imageUrl}&timestamp=${new Date().getTime()}`)
         });
         products.push(product);
       }
