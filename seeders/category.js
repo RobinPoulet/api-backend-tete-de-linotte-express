@@ -17,7 +17,18 @@ for (let i = 0; i < 12; i++) {
     name: faker.commerce.department(),
     description: faker.lorem.sentence(),
   });
-  categories.push(category);
+
+  // Vérifie si la catégorie existe déjà dans la base de données
+  Category.findOne({ name: category.name })
+    .then(existingCategory => {
+      if (!existingCategory) {
+        categories.push(category);
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      mongoose.connection.close();
+    });
 }
 
 Category.insertMany(categories)

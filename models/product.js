@@ -26,13 +26,19 @@ const productSchema = mongoose.Schema({
     required: false 
   },
   categoryId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
     required: true
+  },
+  subCategoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SubCategory',
+    required: false
   },
   images: {
     type: Array,
     required: false
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

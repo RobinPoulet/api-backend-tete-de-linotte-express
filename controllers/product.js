@@ -50,5 +50,12 @@ exports.getProductsByCategory = (req, res, next) => {
     Product.find({ categoryId: req.params.categoryId })
       .then(products => res.status(200).json({ products }))
       .catch(error => res.status(400).json({ error }));
-  }
+}
+  
+exports.getProductsBySubcategory = (req, res, next) => {
+    Product.find({ subCategoryId: req.params.subCategoryId })
+      .then(products => res.status(200).json({ products }))
+      .catch(error => res.status(400).json({ error }));
+}
+  
   

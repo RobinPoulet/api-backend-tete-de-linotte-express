@@ -5,6 +5,7 @@ const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
 const categoryRoutes = require('./routes/category');
+const subCategoryRoutes = require('./routes/subCategory');
 const imageRoute = require('./routes/image');
 
 const app = express();
@@ -41,6 +42,8 @@ app.use('/api/auth', userRoutes);
 app.use('/api/product', productRoutes);
 
 app.use('/api/category', categoryRoutes);
+
+app.use('/api/subCategory', subCategoryRoutes);
 
 app.use('/api/image', imageRoute);
 
