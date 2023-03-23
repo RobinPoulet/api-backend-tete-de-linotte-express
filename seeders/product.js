@@ -40,10 +40,10 @@ async function seed() {
         if (i < 80) {
           // Add a subcategory for the first 80 products
           const subcategory = await SubCategory.findOne({categoryId: categoryId});
-          subcategoryId = subcategory ? subcategory._id : null; // Set the subcategory id, or null if no subcategory found
+          subCategoryId = subcategory ? subcategory._id : null; // Set the subcategory id, or null if no subcategory found
         } else {
           // For the remaining products, set the subcategory id to null
-          subcategoryId = null;
+          subCategoryId = null;
         }
         const product = new Product({
           name: faker.commerce.productName(),
@@ -52,7 +52,7 @@ async function seed() {
           inStock,
           avatarUrl,
           categoryId,
-          subcategoryId, // Set the subcategory id
+          subCategoryId, // Set the subcategory id
           images: [
             faker.image.imageUrl(),
             faker.image.imageUrl(),
