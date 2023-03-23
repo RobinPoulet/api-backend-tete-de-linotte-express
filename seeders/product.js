@@ -33,13 +33,13 @@ async function seed() {
         const inStock = Math.random() >= 0.5;
   
         // Generate a unique avatar URL for the product
-        const avatarUrl = faker.image.avatar({seed: product._id});
+        const avatarUrl = faker.image.avatar({seed: Math.random() * 1000});
   
         // Create the product object and add it to the array
         let subcategoryId;
         if (i < 80) {
           // Add a subcategory for the first 80 products
-          const subcategory = await SubCategory.findOne({parentId: categoryId});
+          const subcategory = await SubCategory.findOne({categoryId: categoryId});
           subcategoryId = subcategory ? subcategory._id : null; // Set the subcategory id, or null if no subcategory found
         } else {
           // For the remaining products, set the subcategory id to null
