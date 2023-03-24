@@ -7,12 +7,12 @@ const categoryCtrl = require('../controllers/category');
 
 router.get('/', categoryCtrl.getAllCategories);
 
-router.post('/', categoryCtrl.createCategory);
+router.post('/', auth, categoryCtrl.createCategory);
 
 router.get('/:id', categoryCtrl.getOneCategory);
 
-router.put('/:id', categoryCtrl.modifyCategory);
+router.put('/:id', auth, categoryCtrl.modifyCategory);
 
-router.delete('/:id', categoryCtrl.deleteCategory);
+router.delete('/:id', auth, categoryCtrl.deleteCategory);
 
 module.exports = router;

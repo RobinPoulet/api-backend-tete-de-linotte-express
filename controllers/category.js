@@ -1,5 +1,4 @@
 const Category = require('../models/category');
-const fs = require('fs');
 
 exports.createCategory = (req, res, next) => {
     console.log(req.body);

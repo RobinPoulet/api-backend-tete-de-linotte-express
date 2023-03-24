@@ -7,13 +7,13 @@ const productCtrl = require('../controllers/product');
 
 router.get('/', productCtrl.getAllProducts);
 
-router.post('/',productCtrl.createProduct);
+router.post('/', auth, productCtrl.createProduct);
 
 router.get('/:id', productCtrl.getOneProduct);
 
-router.put('/:id', productCtrl.modifyProduct);
+router.put('/:id', auth, productCtrl.modifyProduct);
 
-router.delete('/:id', productCtrl.deleteProduct);
+router.delete('/:id', auth, productCtrl.deleteProduct);
 
 router.get('/category/:categoryId', productCtrl.getProductsByCategory);
 
