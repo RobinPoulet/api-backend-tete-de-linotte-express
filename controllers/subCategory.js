@@ -21,6 +21,12 @@ exports.getOneSubCategory = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
+exports.getSubCategoriesByCategory = (req, res, next) => {
+    SubCategory.find({ categoryId: req.params.categoryId })
+      .then(subCategories => res.status(200).json({ subCategories }))
+      .catch(error => res.status(400).json({ error }));
+}
+
 exports.modifySubCategory = (req, res, next) => {
     const subCategoryObject = {...req.body}
 
