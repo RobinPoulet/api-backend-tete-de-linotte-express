@@ -15,38 +15,53 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true }
 )
 
-async function* generateCategories() {
-  for (let i = 0; i < 12; i++) {
+const generateCategories = (parentCategories) => {
+  const categories = []
+  const childCategories = []
+
+  // Generate parent categories
+  for (let i = 0; i < parentCategories.length; i++) {
     const category = new Category({
-      name: faker.commerce.department(),
+      name: parentCategories[i],
       description: faker.lorem.sentence(),
     })
 
-    // Vérifie si la catégorie existe déjà dans la base de données
-    const existingCategory = await Category.findOne({ name: category.name })
-    const categoryExistsInArray = categories.some(
-      (cat) => cat.name === category.name
-    )
-    if (!existingCategory && !categoryExistsInArray) {
-      yield category
-    }
-  }
-}
-
-const categories = []
-
-mongoose.connection.once('open', async () => {
-  for await (const category of generateCategories()) {
     categories.push(category)
   }
 
-  Category.insertMany(categories)
-    .then(() => {
-      console.log('Categories added successfully')
-      mongoose.connection.close()
-    })
-    .catch((error) => {
-      console.log(error)
-      mongoose.connection.close()
-    })
+  // Generate child categories for first 4 parent categories
+  for (let i = 0; i < 4; i++) {
+    for (let j = 1; j <= 5; j++) {
+      const category = new Category({
+        name: `Child ${j} of ${parentCategories[i]}`,
+        description: faker.lorem.sentence(),
+        parentCategoryId: categories[i]._id,
+      })
+
+      childCategories.push(category)
+    }
+  }
+
+  return [...categories, ...childCategories]
+}
+
+const parentCategories = [
+  'Category 1',
+  'Category 2',
+  'Category 3',
+  'Category 4',
+  'Category 5',
+]
+
+const categories = generateCategories(parentCategories)
+
+mongoose.connection.once('open', async () => {
+  try {
+    await Category.insertMany(categories)
+    console.log('Categories added successfully')
+  } catch (error) {
+    console.log(error)
+  } finally {
+    mongoose.connection.close()
+  }
 })

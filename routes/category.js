@@ -11,6 +11,8 @@ router.post('/', auth, categoryCtrl.createCategory)
 
 router.get('/:id', categoryCtrl.getOneCategory)
 
+router.get('/child/:id', categoryCtrl.getChildCategories)
+
 router.put('/:id', auth, categoryCtrl.modifyCategory)
 
 router.delete('/:id', auth, categoryCtrl.deleteCategory)

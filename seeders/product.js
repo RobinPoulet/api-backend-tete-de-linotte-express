@@ -2,7 +2,6 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const Product = require('../models/product')
 const Category = require('../models/category')
-const SubCategory = require('../models/subCategory')
 const { faker } = require('@faker-js/faker')
 
 const mongoUser = process.env.DB_USER
@@ -28,8 +27,23 @@ async function seed() {
     // Generate 100 products
     for (let i = 0; i < 100; i++) {
       // Get a random category for the product
-      const categoryIndex = Math.floor(Math.random() * categories.length)
-      const categoryId = categories[categoryIndex]._id
+      let categoryIndex
+      if (i < 20) {
+        // For the first 20 products, select categories without parents
+        categoryIndex = Math.floor(
+          Math.random() * categories.filter((c) => !c.parentCategoryId).length
+        )
+      } else {
+        // For the remaining 80 products, select categories with one parent
+        categoryIndex = Math.floor(
+          Math.random() * categories.filter((c) => c.parentCategoryId).length
+        )
+      }
+      const category = categories.filter(
+        (c) =>
+          (i < 20 && !c.parentCategoryId) || (i >= 20 && c.parentCategoryId)
+      )[categoryIndex]
+      const categoryId = category._id
 
       // Generate a random price for the product
       const price = Math.floor(Math.random() * 1000) + 1
@@ -41,17 +55,6 @@ async function seed() {
       const avatarUrl = faker.image.avatar({ seed: Math.random() * 1000 })
 
       // Create the product object and add it to the array
-      let subcategoryId
-      if (i < 80) {
-        // Add a subcategory for the first 80 products
-        const subcategory = await SubCategory.findOne({
-          categoryId: categoryId,
-        })
-        subCategoryId = subcategory ? subcategory._id : null // Set the subcategory id, or null if no subcategory found
-      } else {
-        // For the remaining products, set the subcategory id to null
-        subCategoryId = null
-      }
       const product = new Product({
         name: faker.commerce.productName(),
         description: faker.lorem.sentence(),
@@ -59,7 +62,6 @@ async function seed() {
         inStock,
         avatarUrl,
         categoryId,
-        subCategoryId, // Set the subcategory id
         images: [
           faker.image.imageUrl(),
           faker.image.imageUrl(),

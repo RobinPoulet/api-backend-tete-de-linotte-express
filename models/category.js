@@ -10,8 +10,9 @@ const categorySchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    imageUrl: {
-      type: String,
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
       required: false,
     },
   },

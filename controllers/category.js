@@ -20,6 +20,16 @@ exports.getOneCategory = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }))
 }
 
+exports.getChildCategories = (req, res, next) => {
+  Category.find({ categoryId: req.params.id })
+    .then((categories) => {
+      res.status(200).json({ categories })
+    })
+    .catch((error) => {
+      res.status(400).json({ error })
+    })
+}
+
 exports.modifyCategory = (req, res, next) => {
   const categoryObject = { ...req.body }
 

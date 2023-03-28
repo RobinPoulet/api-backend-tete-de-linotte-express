@@ -6,10 +6,8 @@
     "start": "node server.js",
     "seed:category": "node ./seeders/category.js",
     "seed:product": "node ./seeders/product.js",
-    "seed:subCategory": "node ./seeders/subCategory.js",
     "delete_all:category": "node ./delete_all/category.js",
-    "delete_all:product": "node ./delete_all/product.js",
-    "delete_all:subCategory": "node ./delete_all/subCategory.js"
+    "delete_all:product": "node ./delete_all/product.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
