@@ -46,22 +46,7 @@ exports.deleteProduct = (req, res, next) => {
 }
 
 exports.getProductsByCategory = async (req, res, next) => {
-  try {
-    const { categoryId } = req.params
-
-    // Recherche de toutes les sous-catégories
-    const childCategories = await Category.find({
-      categoryId: categoryId,
-    }).select('_id')
-
-    // Concaténation de la catégorie parente et des sous-catégories en un seul tableau
-    const allCategories = [categoryId, ...childCategories.map((c) => c._id)]
-
-    // Recherche de tous les produits correspondant à toutes les catégories
-    const products = await Product.find({ categoryId: { $in: allCategories } })
-
-    res.status(200).json({ products })
-  } catch (error) {
-    res.status(400).json({ error })
-  }
+  Product.find({ categoryId: req.params.categoryId })
+    .then((products) => res.status(200).json({ products }))
+    .catch((error) => res.status(400).json({ error }))
 }
