@@ -1,28 +1,35 @@
 const Product = require('../models/product')
 const Category = require('../models/category')
 
-exports.createProduct = (req, res, next) => {
+exports.createProduct = async (req, res, next) => {
   const product = new Product({ ...req.body })
-
-  product
-    .save()
-    .then((product) => res.status(201).json({ product }))
-    .catch((error) => res.status(400).json({ error }))
+  try {
+    const product = await product.save()
+    res.status(201).json({ product })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
 exports.getAllProducts = async (req, res, next) => {
-  Product.find()
-    .then((products) => res.status(200).json({ products }))
-    .catch((error) => res.status(400).json({ error }))
+  try {
+    const products = await Product.find()
+    res.status(200).json({ products })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.getOneProduct = (req, res, next) => {
-  Product.findOne({ _id: req.params.id })
-    .then((product) => res.status(200).json({ product }))
-    .catch((error) => res.status(400).json({ error }))
+exports.getOneProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id })
+    res.status(200).json({ product })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.modifyProduct = (req, res, next) => {
+exports.modifyProduct = async (req, res, next) => {
   const productObject = req.file
     ? {
         ...JSON.parse(req.body.product),
@@ -31,41 +38,49 @@ exports.modifyProduct = (req, res, next) => {
         }`,
       }
     : { ...req.body }
-
-  Product.updateOne(
-    { _id: req.params.id },
-    { ...productObject, _id: req.params.id }
-  )
-    .then(() => res.status(200).json({ message: 'Modified!' }))
-    .catch((error) => res.status(400).json({ error }))
+  try {
+    const product = await Product.updateOne(
+      { _id: req.params.id },
+      { ...productObject, _id: req.params.id }
+    )
+    res.status(200).json({ product })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.deleteProduct = (req, res, next) => {
-  Product.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Deleted!' }))
-    .catch((error) => res.status(400).json({ error }))
+exports.deleteProduct = async (req, res, next) => {
+  try {
+    await Product.deleteOne({ _id: req.params.id })
+    res.status(200).json({ message: 'Deleted!' })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.getProductsByCategory = (req, res, next) => {
-  Product.find({ categoryId: req.params.categoryId })
-    .then((products) => res.status(200).json({ products }))
-    .catch((error) => res.status(400).json({ error }))
+exports.getProductsByCategory = async (req, res, next) => {
+  try {
+    const products = await Product.find({ categoryId: req.params.categoryId })
+    res.status(200).json({ products })
+  } catch (error) {
+    ;(error) => res.status(400).json({ error })
+  }
 }
 
-exports.getProductsByCategoryAndChildCategory = (req, res, next) => {
-  Category.find({
-    categoryId: req.params.categoryId,
-  })
-    .then((categories) => {
-      const categoryIds = categories.map((category) => category._id)
-      Product.find({
-        $or: [
-          { categoryId: req.params.categoryId },
-          { categoryId: { $in: categoryIds } },
-        ],
-      })
-        .then((products) => res.status(200).json({ products }))
-        .catch((error) => res.status(400).json({ error }))
+exports.getProductsByCategoryAndChildCategory = async (req, res, next) => {
+  try {
+    const categories = await Category.find({
+      categoryId: req.params.categoryId,
     })
-    .catch((error) => res.status(400).json({ error }))
+    const categoryIds = categories.map((category) => category._id)
+    const products = await Product.find({
+      $or: [
+        { categoryId: req.params.categoryId },
+        { categoryId: { $in: categoryIds } },
+      ],
+    })
+    res.status(200).json({ products })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
