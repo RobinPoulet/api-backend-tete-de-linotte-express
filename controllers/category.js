@@ -1,48 +1,60 @@
 const Category = require('../models/category')
 
-exports.createCategory = (req, res, next) => {
+exports.createCategory = async (req, res, next) => {
   const category = new Category({ ...req.body })
-  category
-    .save()
-    .then((category) => res.status(201).json({ category }))
-    .catch((error) => res.status(400).json({ error }))
+  try {
+    const category = await category.save()
+    res.status(201).json({ category })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.getAllCategories = (req, res, next) => {
-  Category.find()
-    .then((categories) => res.status(200).json({ categories }))
-    .catch((error) => res.status(400).json({ error }))
+exports.getAllCategories = async (req, res, next) => {
+  try {
+    const categories = await Category.find()
+    res.status(200).json({ categories })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.getOneCategory = (req, res, next) => {
-  Category.findOne({ _id: req.params.id })
-    .then((category) => res.status(200).json({ category }))
-    .catch((error) => res.status(400).json({ error }))
+exports.getOneCategory = async (req, res, next) => {
+  try {
+    const category = await Category.findOne({ _id: req.params.id })
+    res.status(200).json({ category })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.getChildCategories = (req, res, next) => {
-  Category.find({ categoryId: req.params.id })
-    .then((categories) => {
-      res.status(200).json({ categories })
-    })
-    .catch((error) => {
-      res.status(400).json({ error })
-    })
+exports.getChildCategories = async (req, res, next) => {
+  try {
+    const categories = await Category.find({ categoryId: req.params.id })
+    res.status(200).json({ categories })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.modifyCategory = (req, res, next) => {
+exports.modifyCategory = async (req, res, next) => {
   const categoryObject = { ...req.body }
-
-  Category.updateOne(
-    { _id: req.params.id },
-    { ...categoryObject, _id: req.params.id }
-  )
-    .then(() => res.status(200).json({ message: 'Modified!' }))
-    .catch((error) => res.status(400).json({ error }))
+  try {
+    const category = await Category.updateOne(
+      { _id: req.params.id },
+      { ...categoryObject, _id: req.params.id }
+    )
+    res.status(200).json({ category })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
 
-exports.deleteCategory = (req, res, next) => {
-  Category.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Deleted!' }))
-    .catch((error) => res.status(400).json({ error }))
+exports.deleteCategory = async (req, res, next) => {
+  try {
+    await Category.deleteOne({ _id: req.params.id })
+    res.status(200).json({ message: 'Deleted!' })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 }
