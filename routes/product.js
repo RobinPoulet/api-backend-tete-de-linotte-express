@@ -17,4 +17,9 @@ router.delete('/:id', auth, productCtrl.deleteProduct)
 
 router.get('/category/:categoryId', productCtrl.getProductsByCategory)
 
+router.get(
+  '/category-and-child/:categoryId',
+  productCtrl.getProductsByCategoryAndChildCategory
+)
+
 module.exports = router

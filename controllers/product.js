@@ -1,4 +1,5 @@
 const Product = require('../models/product')
+const Category = require('../models/category')
 
 exports.createProduct = (req, res, next) => {
   const product = new Product({ ...req.body })
@@ -9,7 +10,7 @@ exports.createProduct = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }))
 }
 
-exports.getAllProducts = (req, res, next) => {
+exports.getAllProducts = async (req, res, next) => {
   Product.find()
     .then((products) => res.status(200).json({ products }))
     .catch((error) => res.status(400).json({ error }))
@@ -45,8 +46,26 @@ exports.deleteProduct = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }))
 }
 
-exports.getProductsByCategory = async (req, res, next) => {
+exports.getProductsByCategory = (req, res, next) => {
   Product.find({ categoryId: req.params.categoryId })
     .then((products) => res.status(200).json({ products }))
+    .catch((error) => res.status(400).json({ error }))
+}
+
+exports.getProductsByCategoryAndChildCategory = (req, res, next) => {
+  Category.find({
+    categoryId: req.params.categoryId,
+  })
+    .then((categories) => {
+      const categoryIds = categories.map((category) => category._id)
+      Product.find({
+        $or: [
+          { categoryId: req.params.categoryId },
+          { categoryId: { $in: categoryIds } },
+        ],
+      })
+        .then((products) => res.status(200).json({ products }))
+        .catch((error) => res.status(400).json({ error }))
+    })
     .catch((error) => res.status(400).json({ error }))
 }
