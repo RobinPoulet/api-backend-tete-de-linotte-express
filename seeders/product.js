@@ -23,26 +23,22 @@ async function seed() {
 
     // Create an array to hold all the products
     const products = []
-
+    const productNames = []
     // Generate 100 products
     for (let i = 0; i < 100; i++) {
       // Get a random category for the product
       let categoryIndex
+      const parentCategory = categories.filter((c) => !c.categoryId)
+      const childCategory = categories.filter((c) => c.categoryId)
       if (i < 20) {
         // For the first 20 products, select categories without parents
-        categoryIndex = Math.floor(
-          Math.random() * categories.filter((c) => !c.parentCategoryId).length
-        )
+        categoryIndex = Math.floor(Math.random() * parentCategory.length)
       } else {
         // For the remaining 80 products, select categories with one parent
-        categoryIndex = Math.floor(
-          Math.random() * categories.filter((c) => c.parentCategoryId).length
-        )
+        categoryIndex = Math.floor(Math.random() * childCategory.length)
       }
-      const category = categories.filter(
-        (c) =>
-          (i < 20 && !c.parentCategoryId) || (i >= 20 && c.parentCategoryId)
-      )[categoryIndex]
+      const category =
+        i < 20 ? parentCategory[categoryIndex] : childCategory[categoryIndex]
       const categoryId = category._id
 
       // Generate a random price for the product
@@ -54,19 +50,22 @@ async function seed() {
       // Generate a unique avatar URL for the product
       const avatarUrl = faker.image.avatar({ seed: Math.random() * 1000 })
 
+      let productName = faker.commerce.productName(category.name)
+      while (productNames.includes(productName)) {
+        productName = faker.commerce.productName(category.name)
+      }
+      productNames.push(productName)
       // Create the product object and add it to the array
       const product = new Product({
-        name: faker.commerce.productName(),
+        name: productName,
         description: faker.lorem.sentence(),
         price,
         inStock,
         avatarUrl,
         categoryId,
-        images: [
-          faker.image.imageUrl(),
-          faker.image.imageUrl(),
-          faker.image.imageUrl(),
-        ].map((imageUrl) => `${imageUrl}&timestamp=${new Date().getTime()}`),
+        images: Array.from({ length: 3 }, (_, i) =>
+          faker.image.avatar({ seed: Math.random() * (1000 + i) })
+        ),
       })
       products.push(product)
     }

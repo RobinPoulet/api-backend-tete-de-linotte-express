@@ -15,27 +15,36 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true }
 )
 
-const generateCategories = (parentCategories) => {
+const generateCategories = () => {
   const categories = []
   const childCategories = []
+  const categoriesNames = []
 
   // Generate parent categories
-  for (let i = 0; i < parentCategories.length; i++) {
+  for (let i = 0; i < 5; i++) {
+    let categoryParentName = faker.commerce.department()
+    while (categoriesNames.includes(categoryParentName)) {
+      categoryParentName = faker.commerce.department()
+    }
+    categoriesNames.push(categoryParentName)
     const category = new Category({
-      name: parentCategories[i],
+      name: categoryParentName,
       description: faker.lorem.sentence(),
     })
-
     categories.push(category)
   }
-
-  // Generate child categories for first 4 parent categories
-  for (let i = 0; i < 4; i++) {
-    for (let j = 1; j <= 5; j++) {
+  // Generate child categories for first 3 parent categories
+  for (let i = 0; i < 3; i++) {
+    for (let j = 1; j <= 3; j++) {
+      let categoryChildName = faker.commerce.department()
+      while (categoriesNames.includes(categoryChildName)) {
+        categoryChildName = faker.commerce.department()
+      }
+      categoriesNames.push(categoryChildName)
       const category = new Category({
-        name: `Child ${j} of ${parentCategories[i]}`,
+        name: categoryChildName,
         description: faker.lorem.sentence(),
-        parentCategoryId: categories[i]._id,
+        categoryId: categories[i]._id,
       })
 
       childCategories.push(category)
@@ -45,15 +54,7 @@ const generateCategories = (parentCategories) => {
   return [...categories, ...childCategories]
 }
 
-const parentCategories = [
-  'Category 1',
-  'Category 2',
-  'Category 3',
-  'Category 4',
-  'Category 5',
-]
-
-const categories = generateCategories(parentCategories)
+const categories = generateCategories()
 
 mongoose.connection.once('open', async () => {
   try {
